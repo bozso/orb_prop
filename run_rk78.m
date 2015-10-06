@@ -2,7 +2,6 @@ GRAVITY_CONST = 6.67384e-11;
 EARTH_MASS = 5.97237e24;
 
 addpath('/home/istvan/orb_prop_matsource/');
-addpath('/home/istvan/orb_prop_matsource/rk_orbit/functions');
 
 %r_0 = [4e6; 5.74456e6; 0; -4571.43; 6565.214; 0]';
 %r_0 = [3.5e6; ; 3.5e6; 4949770; 0; 8e3; 0]';
