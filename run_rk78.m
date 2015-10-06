@@ -18,7 +18,7 @@ Rot = CalcRotMtx (sinw, cosw, inclination, omega);
 
 step = 100;
 
-day = 4;
+day = 0.1;
 
 cicles = ceil((86400 * day ) / step);
 
