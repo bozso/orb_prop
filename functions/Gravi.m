@@ -1,3 +1,5 @@
+%~ Equations of motion, assuming that the Earth is a point mass
+
 function rdot = Gravi(t, r)
 	GRAVITY_CONST = 6.67384e-11;
 	EARTH_MASS = 5.97237e24;

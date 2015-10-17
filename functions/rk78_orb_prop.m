@@ -1,3 +1,5 @@
+%~ Integrates the equations of motion for given time intervals
+
 function timexyzv = rk78_orb_prop (r_0, timestep, cicles, vopt)
 	
 	[t, r_rk4] = ode78(@Gravi, [0, timestep], r_0, vopt);

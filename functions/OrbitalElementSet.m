@@ -1,3 +1,5 @@
+%~ Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
+
 function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(rv_0, t_0, GM)
 	r_0 = [rv_0(1), rv_0(2), rv_0(3)];
 	v_0 = [rv_0(4), rv_0(5), rv_0(6)];
