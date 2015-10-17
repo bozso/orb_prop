@@ -1,6 +1,5 @@
 % Necessary constants
-GRAVITY_CONST = 6.67384e-11;
-EARTH_MASS = 5.97237e24;
+global GRAVITY_CONST = 6.67384e-11 EARTH_MASS = 5.97237e24;
 
 % Acces to function scripts
 addpath ('/home/istvan/orb_prop_matsource/rk_orbit/functions');
