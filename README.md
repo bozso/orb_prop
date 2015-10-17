@@ -12,3 +12,7 @@ step    # of seconds in a section
 day     # of days to propagate  
 name    name of output files  
 inital conditions x, y, z, vx, vy, vz separated by spaces
+
+## Currently working on:
+* a document that explains how the gravitational acceleration can be derived from the series expansion of the gravitational potential
+* implementation of the gravitational acceleration, that is derived from the series expansion, in the script files 
