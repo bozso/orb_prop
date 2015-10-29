@@ -1,24 +1,32 @@
-% Necessary constants
-global GRAVITY_CONST = 6.67384e-11 EARTH_MASS = 5.97237e24;
-
 % Acces to function scripts
-addpath ('/home/istvan/orb_prop_matsource/rk_orbit/functions');
+addpath ('/home/istvan/orb_prop/rk_orbit/functions');
+addpath ('/home/istvan/orb_prop/sgp4');
+
+% Necessary constants
+global tumin mu a xke j
+[tumin, mu, a, xke, j2, j3, j4, j3oj2] = getgravc(84);
+j = [j2, j3, j4];
+a = a * 1000;
+mu = mu * 1e9;
+
 
 % File that contains propagation parameters and initial conditions
 fin = fopen ('ics.dat');
 
 % Processing parameters and initial conditions
-for iii = 1:4
+for iii = 1:5
 	str = fgetl(fin);
 	switch ( str(1:findstr(str, ' ') - 1)  )
 		case 't0'
-			t0 = str2num (str(rindex(str, ' '):end))
+			t0 = str2num (str(rindex(str, ' '):end));
 		case 'step'
-			step = str2num (str(rindex(str, ' '):end))
+			step = str2num (str(rindex(str, ' '):end));
 		case 'day'
-			day = str2num (str(rindex(str, ' '):end))
+			day = str2num (str(rindex(str, ' '):end));
 		case 'name'
-			name = str(rindex(str, ' '):end)
+			name = str(rindex(str, ' ') + 1:end);
+		case 'model'
+			model = str(rindex(str, ' ') + 1:end);
 		otherwise
 			disp('Warning: Unrecognized option.')
 	end
@@ -44,7 +52,7 @@ Rot = CalcRotMtx (sinw, cosw, inclination, omega);
 cicles = ceil((86400 * day ) / step);
 
 % Propagation with ode78
-timexyzv = rk78_orb_prop (rv_0, step, cicles, vopt);
+timexyzv = rk78 (rv_0, step, cicles, model, vopt);
 
 % Getting x, y, z coordinates
 xyz = [timexyzv(:,2), timexyzv(:,3), timexyzv(:,4)];

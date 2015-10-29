@@ -14,5 +14,8 @@ name    name of output files
 inital conditions x, y, z, vx, vy, vz separated by spaces
 
 ## Currently working on:
-* a document that explains how the gravitational acceleration can be derived from the series expansion of the gravitational potential
-* implementation of the gravitational acceleration, that is derived from the series expansion, in the script files 
+* gravitational acceleration determined from numerical derivation of the potential  
+
+## History
+* 2015-10-29: Added gt_ics.m script that takes an orbital element set and extracts
+the inital conditions from it (positin and velicity vector)

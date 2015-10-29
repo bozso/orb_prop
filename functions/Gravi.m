@@ -10,4 +10,4 @@ function rdot = Gravi(t, r)
 	rdot(4) = - (GRAVITY_CONST / delta) * (EARTH_MASS / delta) * (r(1) / delta);
 	rdot(5) = - (GRAVITY_CONST / delta) * (EARTH_MASS / delta) * (r(2) / delta);
 	rdot(6) = - (GRAVITY_CONST / delta) * (EARTH_MASS / delta) * (r(3) / delta);
-endfunction
+end
