@@ -7,15 +7,15 @@ Comparing two numerical methods of satellite trajectory calculation: SGP4 and nu
 ## Input of the integrator
 
 Prameter file should look like this:  
-t0      t0 time  
-step    # of seconds in a section  
-day     # of days to propagate  
-name    name of output files  
-inital conditions x, y, z, vx, vy, vz separated by spaces
+step day model  
+orbital elements
 
 ## Currently working on:
 * gravitational acceleration determined from numerical derivation of the potential  
+* run_rk78.m reading inital conditions from orbit element sets
 
 ## History
-* 2015-10-29: Added gt_ics.m script that takes an orbital element set and extracts
+* 2015-10-30: Implenetation of get_ics.m in run_rk78.m has begun, now working on adding 
+functionality to the script that will read inital conditions from orbital element sets
+* 2015-10-29: Added get_ics.m script that takes an orbital element set and extracts
 the inital conditions from it (positin and velicity vector)
