@@ -1,4 +1,4 @@
-%~ Function from the SGP4/SDP4 library modified so it returns sin(v) and cos(v) instead of v.
+% Function from the SGP4/SDP4 library modified so it returns sin(v) and cos(v) instead of v.
 
 % ------------------------------------------------------------------------------
 %

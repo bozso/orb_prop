@@ -1,13 +1,14 @@
-%~ Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
+% Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
 
-function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(rv_0, t_0, GM)
+function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(t_0, rv_0)
+	global mu_si
 	r_0 = [rv_0(1), rv_0(2), rv_0(3)];
 	v_0 = [rv_0(4), rv_0(5), rv_0(6)];
 	
 	c = cross(r_0, v_0);
 	r = norm(r_0);
 	
-	lambda = - (GM / r)* r_0 + cross (v_0, c);
+	lambda = - (mu_si / r)* r_0 + cross (v_0, c);
 	
 	i = - atan2 (sqrt(c(1) * c(1) + c(2) * c(2)), c(3));
 	
@@ -20,11 +21,11 @@ function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(rv_0, t_0, GM
 	sinw = ( -lambda(1) * sin(omega) + lambda(2) * cos(omega) ) / ( norm(lambda) * cos(i) );	
 	cosw = ( lambda(2) * sin(omega) + lambda(1) * cos(omega) ) / ( norm(lambda) );
 
-	h = (v_0 * v_0') / 2 - (GM / r);
+	h = (v_0 * v_0') / 2 - (mu_si / r);
 	
-	a = -GM / (2*h);
-	n = sqrt(GM / (a*a*a));
-	e = sqrt( 1 + 2 * h * (c*c' / (GM * GM)) );
+	a = -mu_si / (2*h);
+	n = sqrt(mu_si / (a*a*a));
+	e = sqrt( 1 + 2 * h * (c*c' / (mu_si * mu_si)) );
 	E_0 = acos( (1 - (r / a)) / e );
 	
 	E_O_im = imag (E_0);

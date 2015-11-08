@@ -11,11 +11,12 @@ step day model
 orbital elements
 
 ## Currently working on:
-* gravitational acceleration determined from numerical derivation of the potential  
-* run_rk78.m reading inital conditions from orbit element sets
+* determining gravitational acceleration from numerical derivation of the potential  
 
 ## History
-* 2015-10-30: Implenetation of get_ics.m in run_rk78.m has begun, now working on adding 
+* 2015:
+* 11.08 - run_rk78.m now reads the inital conditions from two line orbital element sets
+* 10.30 - Implenetation of get_ics.m in run_rk78.m has begun, now working on adding 
 functionality to the script that will read inital conditions from orbital element sets
-* 2015-10-29: Added get_ics.m script that takes an orbital element set and extracts
+* 10.29 - Added get_ics.m script that takes an orbital element set and extracts
 the inital conditions from it (positin and velicity vector)
