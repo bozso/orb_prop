@@ -2,7 +2,7 @@
 % reference plane.
 
 
-function Rot = CalcRotMtx (sinw, cosw, i, omega)
+function Rot = calc_rotmatrix (sinw, cosw, i, omega)
 
 	P_x = cosw * cos(omega) - sinw * sin(omega) * cos(i);
 	P_y = cosw * sin(omega) + sinw * cos(omega) * cos(i);

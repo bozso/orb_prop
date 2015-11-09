@@ -18,7 +18,7 @@ a_earth = radiusearthkm * 1000;
 mu_si = 3.9858874e14;
 
 % File that contains propagation parameters and initial conditions
-infile = fopen (argv(){1});
+infile = fopen(argv(){1});
 
 % Processing parameters and initial conditions
 
@@ -56,11 +56,11 @@ end
 
 fclose(infile);
 
-vopt = odeset ('RelTol', 1e-4, 'AbsTol', 1, 'NormControl', 'on', 'InitialStep', 100, 'MaxStep', 100);
+vopt = odeset('RelTol', 1e-4, 'AbsTol', 1, 'NormControl', 'on', 'InitialStep', 100, 'MaxStep', 100);
 
 for jjj = 1:(iii - 1)
 	% Getting initial conditions
-	[satrec(jjj), ro ,vo] = sgp4 (satrec(jjj),  0.0);
+	[satrec(jjj), ro ,vo] = sgp4(satrec(jjj),  0.0);
 	
 	% Changing into SI units
 	rv_0 = [ro * 1e3, vo * 1e3];
@@ -74,44 +74,45 @@ for jjj = 1:(iii - 1)
 	if (model == 'point_mass')
 		% Calculation  of orbital element set from initial condtions
 		[a, eccentricity, inclination, omega, sinw, cosw, n, tau] = ...
-		OrbitalElementSet (t0, rv_0);
+		orbital_elements(t0, rv_0);
 		
 		%disp(satrec(jjj))
 	
 		% Calculating Rot matrix that transforms coordinates from the orbital plane to the 
 		% reference plane.
-		Rot = CalcRotMtx (sinw, cosw, inclination, omega);
+		Rot = calc_rotmatrix(sinw, cosw, inclination, omega);
 	end
 	
-	% How many 'step' seconds long sections we need
-	%cicles = ceil((86400 * day ) / step);
+	switch (model)
+		case 'point_mass'
+			f_handle = @point_mass;
+		case 'zonal'
+			f_handle = @zonal;
+		otherwise
+			printf('Unrecognized model option!\n');
+			return
+	end
 
-	f_handle = @Gravi;
-	
 	% Propagation with ode78
-	%timexyzv = rk78 (t0, rv_0, step, cicles, model, vopt);
 	[t, r_int] = ode78(f_handle, [t0, 86400 * day], rv_0, vopt);
 	
+	timexyzv = [t, xyz];
+	save('-ascii', [plotname, '.dat'], 'timexyzv');
+	clear timexyzv;
+		
 	% Getting x, y, z coordinates
-	%xyz = [timexyzv(:,2), timexyzv(:,3), timexyzv(:,4)];
 	xyz = [r_int(:,1), r_int(:,2), r_int(:,3)];
 	
 	% Getting time points
 	time = t;
-	
-	timexyzv = [t, xyz];
-	
-	save('-ascii', [plotname, '.dat'], 'timexyzv');
-
-	clear timexyzv;
 
 	if (model == 'point_mass')
 		% Calculation of the theoretical coordinates in the orbital plane
-		ellipse = CalcEllipse (time, tau, eccentricity, a, n);
+		ellipse = calc_ellipse (time, tau, eccentricity, a, n);
 	
 		ellipse = ellipse * Rot;
 
-		save ('-ascii', [plotname, '_ellipse.dat'], 'ellipse');
+		save('-ascii', [plotname, '_ellipse.dat'], 'ellipse');
 
 		% Calculating differences between theoretical and numerical coordinates
 		delta = sqrt(sum((ellipse - xyz)'.^2));
@@ -123,7 +124,7 @@ for jjj = 1:(iii - 1)
 		h = figure(2);
 		clf
 		hold on
-		plot (delta(:,1) / 86400, delta(:,2));
+		plot(delta(:,1) / 86400, delta(:,2));
 		print(h,'-dpng','-color', [plotname, '_delta' , '.png']);
 		hold off
 	end % if point_mass
@@ -131,14 +132,14 @@ for jjj = 1:(iii - 1)
 	% Plotting orbit
 	h=figure(1);
 	hold on;
-	plot3 (xyz(:, 1) / 1e6, xyz(:, 2) / 1e6, xyz(:, 3) / 1e6, 'ob;RK4;', 'linewidth', 1, ...
+	plot3(xyz(:, 1) / 1e6, xyz(:, 2) / 1e6, xyz(:, 3) / 1e6, 'ob;RK4;', 'linewidth', 1, ...
 	ellipse(:,1) / 1e6, ellipse(:,2) / 1e6, ellipse(:,3) / 1e6, '*r;Ellipse;', 'linewidth', 1, ...
 	0, 0, 0, 'ok;Earth;');
 	view(3);
 	xlabel('x [1000 km]');
 	ylabel('y [1000 km]');
 	zlabel('z [1000 km]');
-	legend ('location', 'northeastoutside');
+	legend('location', 'northeastoutside');
 	print(h,'-dpng','-color', [plotname, '.png']);
 	hold off
 end % for satrec

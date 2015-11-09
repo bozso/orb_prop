@@ -1,6 +1,6 @@
 % Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
 
-function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(t_0, rv_0)
+function [a, e, i, omega, sinw, cosw,  n, tau] = orbital_elements(t_0, rv_0)
 	global mu_si
 	r_0 = [rv_0(1), rv_0(2), rv_0(3)];
 	v_0 = [rv_0(4), rv_0(5), rv_0(6)];
@@ -10,12 +10,12 @@ function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(t_0, rv_0)
 	
 	lambda = - (mu_si / r)* r_0 + cross (v_0, c);
 	
-	i = - atan2 (sqrt(c(1) * c(1) + c(2) * c(2)), c(3));
+	i = - atan2(sqrt(c(1) * c(1) + c(2) * c(2)), c(3));
 	
 	if (-c(1) == 0 && c(2) == 0)
 		omega = 0.0;
 	else
-		omega = atan2 (-c(1), c(2));
+		omega = atan2(-c(1), c(2));
 	end
 	
 	sinw = ( -lambda(1) * sin(omega) + lambda(2) * cos(omega) ) / ( norm(lambda) * cos(i) );	
@@ -28,7 +28,7 @@ function [a, e, i, omega, sinw, cosw,  n, tau] = OrbitalElementSet(t_0, rv_0)
 	e = sqrt( 1 + 2 * h * (c*c' / (mu_si * mu_si)) );
 	E_0 = acos( (1 - (r / a)) / e );
 	
-	E_O_im = imag (E_0);
+	E_O_im = imag(E_0);
 	
 	if ( E_O_im > 1e-3)
 		printf ('Warning: E_0 has a significant imaginary part: %f\n', E_0_im);

@@ -3,7 +3,7 @@
 % Inputs: orbital elements: tau, e, a, n
 % Outputs: x, y coordinate pairs in the orbital plane in matrix form (ellipse)
 
-function ellipse = CalcEllipse (time, tau, e, a, n)
+function ellipse = calc_ellipse (time, tau, e, a, n)
 	M = n * (time - tau);
 
 	for iii = 1 : numel(time)

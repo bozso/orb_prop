@@ -1,6 +1,6 @@
 % Equations of motion, assuming that the Earth is a point mass
 
-function rdot = Gravi(t, r)
+function rdot = point_mass(t, r)
 	global mu_si
 	delta = norm([r(1), r(2), r(3)]);
 	mu_per_rcubed = mu_si / delta^3;
