@@ -6,19 +6,19 @@ warning('off', 'Octave:possible-matlab-short-circuit-operator');
 whichconst = 84;
 
 % Necessary constants
-global tumin mu mu_si radiusearthkm a_earth xke j j2 j3 j4 j3oj2
+global tumin mu mu_si radiusearthkm a_earth xke C
+C = [-0.484165143790815e-3, 0.95716107093473e-6, 0.53996586663899e-6];
 
 % Getting WGS84 constants
 [tumin, mu, radiusearthkm, xke, j2, j3, j4, j3oj2] = getgravc(whichconst);
-j = [j2, j3, j4];
 
 % Changing into SI units
 a_earth = radiusearthkm * 1000;
-% mu_si = mu * 1e9;
-mu_si = 3.9858874e14;
+mu_si = mu * 1e9;
+%mu_si = 3.9858874e14;
 
 % File that contains propagation parameters and initial conditions
-infile = fopen(argv(){1});
+infile = fopen('/home/istvan/orb_prop/fengyun_1c.tle');
 
 % Processing parameters and initial conditions
 
@@ -58,12 +58,13 @@ fclose(infile);
 
 vopt = odeset('RelTol', 1e-4, 'AbsTol', 1, 'NormControl', 'on', 'InitialStep', 100, 'MaxStep', 100);
 
+
 for jjj = 1:(iii - 1)
 	% Getting initial conditions
 	[satrec(jjj), ro ,vo] = sgp4(satrec(jjj),  0.0);
 	
 	% Changing into SI units
-	rv_0 = [ro * 1e3, vo * 1e3];
+	rv_0 = [ro, vo] * 1e3;
 	
 	% plotname is satellite number
 	plotname = ['output/', num2str(satrec(jjj).satnum)];
@@ -71,17 +72,15 @@ for jjj = 1:(iii - 1)
 	% t0 = satrec(jjj).jdsatepoch * 86400;
 	t0 = 0.0;
 	
-	if (model == 'point_mass')
+	%if (model == 'point_mass')
 		% Calculation  of orbital element set from initial condtions
-		[a, eccentricity, inclination, omega, sinw, cosw, n, tau] = ...
-		orbital_elements(t0, rv_0);
+		%[a, eccentricity, inclination, omega, sinw, cosw, n, tau] = ...
+		%orbital_elements(t0, rv_0);
 		
-		%disp(satrec(jjj))
-	
 		% Calculating Rot matrix that transforms coordinates from the orbital plane to the 
 		% reference plane.
-		Rot = calc_rotmatrix(sinw, cosw, inclination, omega);
-	end
+		%Rot = calc_rotmatrix(sinw, cosw, inclination, omega);
+	%end
 	
 	switch (model)
 		case 'point_mass'
@@ -96,7 +95,7 @@ for jjj = 1:(iii - 1)
 	% Propagation with ode78
 	[t, r_int] = ode78(f_handle, [t0, 86400 * day], rv_0, vopt);
 	
-	timexyzv = [t, xyz];
+	timexyzv = [t, r_int];
 	save('-ascii', [plotname, '.dat'], 'timexyzv');
 	clear timexyzv;
 		
@@ -106,34 +105,33 @@ for jjj = 1:(iii - 1)
 	% Getting time points
 	time = t;
 
-	if (model == 'point_mass')
+	%if (model == 'point_mass')
 		% Calculation of the theoretical coordinates in the orbital plane
-		ellipse = calc_ellipse (time, tau, eccentricity, a, n);
+		%ellipse = calc_ellipse (time, tau, eccentricity, a, n);
 	
-		ellipse = ellipse * Rot;
+		%ellipse = ellipse * Rot;
 
-		save('-ascii', [plotname, '_ellipse.dat'], 'ellipse');
+		%save('-ascii', [plotname, '_ellipse.dat'], 'ellipse');
 
 		% Calculating differences between theoretical and numerical coordinates
-		delta = sqrt(sum((ellipse - xyz)'.^2));
-
-		delta = [time, delta'];
-		save('-ascii', [plotname, '_delta.dat'], 'delta');
+		%delta = sqrt(sum((ellipse - xyz)'.^2));
+		
+		%delta = [time, delta'];
+		%save('-ascii', [plotname, '_delta.dat'], 'delta');
 
 		% Plotting deltas
-		h = figure(2);
-		clf
-		hold on
-		plot(delta(:,1) / 86400, delta(:,2));
-		print(h,'-dpng','-color', [plotname, '_delta' , '.png']);
-		hold off
-	end % if point_mass
+		%h = figure(2);
+		%clf
+		%hold on
+		%plot(delta(:,1) / 86400, delta(:,2));
+		%print(h,'-dpng','-color', [plotname, '_delta' , '.png']);
+		%hold off
+	%end % if point_mass
 	
 	% Plotting orbit
 	h=figure(1);
 	hold on;
 	plot3(xyz(:, 1) / 1e6, xyz(:, 2) / 1e6, xyz(:, 3) / 1e6, 'ob;RK4;', 'linewidth', 1, ...
-	ellipse(:,1) / 1e6, ellipse(:,2) / 1e6, ellipse(:,3) / 1e6, '*r;Ellipse;', 'linewidth', 1, ...
 	0, 0, 0, 'ok;Earth;');
 	view(3);
 	xlabel('x [1000 km]');
