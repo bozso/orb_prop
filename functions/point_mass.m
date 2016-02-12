@@ -1,4 +1,4 @@
-% Equations of motion, assuming that the Earth is a point mass
+%~ Equations of motion, assuming that the Earth is a point mass
 
 function rdot = point_mass(t, r)
 	global mu_si

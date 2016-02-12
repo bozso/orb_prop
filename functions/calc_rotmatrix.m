@@ -1,5 +1,5 @@
-% Returns the Rot matrix that transforms coordinates from the orbital plane to the 
-% reference plane.
+%~ Returns the Rot matrix that transforms coordinates from the orbital plane to the 
+%~ reference plane.
 
 
 function Rot = calc_rotmatrix (sinw, cosw, i, omega)

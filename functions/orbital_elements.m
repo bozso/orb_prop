@@ -1,4 +1,4 @@
-% Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
+%~ Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
 
 function [a, e, i, omega, sinw, cosw,  n, tau] = orbital_elements(t_0, rv_0)
 	global mu_si
