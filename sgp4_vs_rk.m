@@ -1,5 +1,5 @@
-sgp4 = load('-ascii', 'output/sgp4_fengyun.dat');
-rk = load('-ascii', 'output/25730.dat');
+sgp4 = load('-ascii', 'output/4793_sgp4.dat');
+rk = load('-ascii', 'output/4793.dat');
 
 delta = [rk(:,2:4) / 1e3 - sgp4(:,2:4)];
 
