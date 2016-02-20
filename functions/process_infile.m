@@ -1,4 +1,4 @@
-function [step day model outname satrec] = process_infile(file_loc, whichconst)
+function [step day model satrec] = process_infile(file_loc, whichconst)
     % File that contains propagation parameters and initial conditions
     infile = fopen(file_loc, 'r');
     
@@ -6,7 +6,7 @@ function [step day model outname satrec] = process_infile(file_loc, whichconst)
     
     str = strsplit(fgetl(infile));
     
-    if (numel(str) > 4)
+    if (numel(str) > 3)
             disp('Error: Too many options given in the first line!')
             return
     end
@@ -14,7 +14,6 @@ function [step day model outname satrec] = process_infile(file_loc, whichconst)
     step = str2num(str{1});
     day = str2num(str{2});
     model = str{3};
-    outname = str{4};
     
     % Processing oribtal element set
     disp('Reading satellite data...')

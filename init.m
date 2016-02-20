@@ -8,7 +8,7 @@ warning('off', 'Octave:possible-matlab-short-circuit-operator');
 whichconst = 84;
 
 %~ Necessary constants
-global tumin mu mu_si radiusearthkm a_earth xke C
+global tumin mu mu_si radiusearthkm a_earth xke C whichconst
 C = [-0.484165143790815e-3, 0.95716107093473e-6, 0.53996586663899e-6];
 
 %~ Getting WGS84 constants

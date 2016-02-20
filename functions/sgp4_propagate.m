@@ -1,4 +1,5 @@
-function [] = sgp4_propagate(infile_path)
+function [] = sgp4_propagate(infile_path, outname)
+    global whichconst
     [step day model satrec] = process_infile(infile_path, whichconst);
     
     time = 0:step:day*86400;
@@ -18,6 +19,8 @@ function [] = sgp4_propagate(infile_path)
     
     global opsmode
 
+    outfile = fopen(['output/', outname, '_sgp.dat'], 'w');
+
     for iii = 1:numel(time)
             [satrec, ro ,vo] = sgp4 (satrec,  time(iii));
 
@@ -27,13 +30,13 @@ function [] = sgp4_propagate(infile_path)
                     
             if (satrec.error == 0)
                     fprintf(outfile, ' %16.8f %16.8f %16.8f %16.8f %12.9f %12.9f %12.9f\n',...
-                                    satrec.t,ro(1),ro(2),ro(3),vo(1),vo(2),vo(3));
+                                    satrec.t,ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
             else
                     jd = satrec.jdsatepoch + time(iii)/1440.0;
                     [year,mon,day,hr,minute,sec] = invjday ( jd );
                     
                     fprintf(outfile, ' %16.8f %16.8f %16.8f %16.8f %12.9f %12.9f %12.9f',...
-                                    tsince,ro(1),ro(2),ro(3),vo(1),vo(2),vo(3));
+                                    tsince,ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
                     
                     [p,a,ecc,incl,node,argp,nu,m,arglat,truelon,lonper ] = rv2coe (ro,vo,mu);
     

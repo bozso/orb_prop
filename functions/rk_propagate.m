@@ -1,6 +1,7 @@
-function [] = rk_propagate(infile_path)
+function [timexyzv] = rk_propagate(infile_path, outname)
     %~ Processing parameters and initial conditions
-    [step day model outname satrec] = process_infile(infile_path, whichconst);
+    global whichconst
+    [step day model satrec] = process_infile(infile_path, whichconst);
 
     switch (model)
             case 'point_mass'
@@ -26,10 +27,9 @@ function [] = rk_propagate(infile_path)
     plotname = ['output/', outname];
 
     % Propagation with ode78
-    [t, r_ode] = ode78(f_handle, [t0, 86400 * day], rv_0, vopt);
+    [t, r_ode] = ode78(f_handle, [0.0, 86400 * day], rv_0, vopt);
 
     timexyzv = [t, r_ode];
 
-    save('-ascii', [outname, '.dat'], 'timexyzv');
-    clear timexyzv;
+    save('-ascii', ['output/', outname, '_rk.dat'], 'timexyzv');
 end

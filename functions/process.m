@@ -78,15 +78,15 @@ function satrec = process(whichconst, longstr1, ...
  
     % parse second line
     
-	cardnumb = str2num(longstr2(1));
-	satrec.satnum = str2num(longstr2(3:7));
-	satrec.inclo = str2num(longstr2(8:16));
-	satrec.nodeo = str2num(longstr2(17:25));
-	satrec.ecco = str2num(longstr2(26:33));
-	satrec.argpo = str2num(longstr2(34:42));
-	satrec.mo = str2num(longstr2(43:51));
-	satrec.no = str2num(longstr2(52:63));
-	revnum = str2num(longstr2(64:68));
+    cardnumb = str2num(longstr2(1));
+    satrec.satnum = str2num(longstr2(3:7));
+    satrec.inclo = str2num(longstr2(8:16));
+    satrec.nodeo = str2num(longstr2(17:25));
+    satrec.ecco = str2num(longstr2(26:33));
+    satrec.argpo = str2num(longstr2(34:42));
+    satrec.mo = str2num(longstr2(43:51));
+    satrec.no = str2num(longstr2(52:63));
+    revnum = str2num(longstr2(64:68));
 
 %     // ---- find no, ndot, nddot ----
     satrec.no   = satrec.no / xpdotp; %//* rad/min
