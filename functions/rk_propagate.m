@@ -1,18 +1,22 @@
 function [timexyzv] = rk_propagate(infile_path, outname)
     %~ Processing parameters and initial conditions
     global whichconst
-    [step day model satrec] = process_infile(infile_path, whichconst);
-
+	
+	[step day model satrec] = process_infile(infile_path, whichconst);
+	
     switch (model)
             case 'point_mass'
-                    f_handle = @point_mass;
-                    nmodel = 1;
+				disp('rk_propagate: Calculating with Earth as a point mass.');
+				f_handle = @point_mass;
+				nmodel = 1;
             case 'zonal'
-                    f_handle = @zonal;
-                    nmodel = 2;
+				f_handle = @zonal;
+				nmodel = 2;
+				disp('rk_propagate: Zonal harmonics will be used, air friction will be inored')
+				satrec.bstar = 0.0;
             otherwise
-                    disp('Unrecognized model option!');
-                    return
+				disp('rk_propagate: Unrecognized model option!');
+				return
     end
 
     vopt = odeset('RelTol', 1e-4, 'AbsTol', 1, 'NormControl', 'on', 'InitialStep', 100, 'MaxStep', 100);

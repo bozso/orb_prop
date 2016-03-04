@@ -1,17 +1,19 @@
 function [] = sgp4_propagate(infile_path, outname)
     global whichconst
-    [step day model satrec] = process_infile(infile_path, whichconst);
     
-    time = 0:step:day*86400;
-    
+	[step day model satrec] = process_infile(infile_path, whichconst);
+	
+	time = 0:step:day*86400;
+	
     switch (model)
             case 'point_mass'
-                    disp('SGP4 can not handle the Earth as a point mass.');
+                    disp('sgp4_propagate: SGP4 can not handle the Earth as a point mass.');
                     return
             case 'zonal'
-                    disp('Zonal harmonics will be used, air friction will be inored')
+                    disp('sgp4_propagate: Zonal harmonics will be used, air friction will be inored')
+                    satrec.bstar = 0.0;
             otherwise
-                    disp('Unrecognized model option!');
+                    disp('sgp4_propagate: Unrecognized model option!');
                     return
     end
     
@@ -22,7 +24,7 @@ function [] = sgp4_propagate(infile_path, outname)
     outfile = fopen(['output/', outname, '_sgp.dat'], 'w');
 
     for iii = 1:numel(time)
-            [satrec, ro ,vo] = sgp4 (satrec,  time(iii));
+            [satrec, ro ,vo] = sgp4 (satrec,  time(iii) / 60.0);
 
             if (satrec.error > 0)
                     fprintf(1,'# *** error: t:= %f *** code = %3i\n', time(iii), satrec.error);
@@ -30,13 +32,13 @@ function [] = sgp4_propagate(infile_path, outname)
                     
             if (satrec.error == 0)
                     fprintf(outfile, ' %16.8f %16.8f %16.8f %16.8f %12.9f %12.9f %12.9f\n',...
-                                    satrec.t,ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
+                                    time(iii),ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
             else
                     jd = satrec.jdsatepoch + time(iii)/1440.0;
                     [year,mon,day,hr,minute,sec] = invjday ( jd );
                     
                     fprintf(outfile, ' %16.8f %16.8f %16.8f %16.8f %12.9f %12.9f %12.9f',...
-                                    tsince,ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
+                                    time(iii),ro(1)*1e3,ro(2)*1e3,ro(3)*1e3,vo(1),vo(2),vo(3));
                     
                     [p,a,ecc,incl,node,argp,nu,m,arglat,truelon,lonper ] = rv2coe (ro,vo,mu);
     

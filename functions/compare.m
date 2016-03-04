@@ -1,11 +1,11 @@
-function [] = compare(t_r_1, t_r_2, outname)
+function [] = compare(t_r_1, t_r_2, outname, figure_num)
     if ( rows(t_r_1) != rows(t_r_2) )
-        disp('Rows of the two data matrices are not equal!')
+        disp('compare: Rows of the two data matrices are not equal!')
         return
     end
 
-    if ( sum( t_r_1(:,1) == t_r_2(:,2) ) != 0 )
-        disp('Dates of the two data matrices are not equal!')
+    if ( sum( t_r_1(:,1) - t_r_2(:,1) ) ~= 0 )
+        disp('compare: Dates of the two data matrices are not equal!')
         return
     end
 
@@ -14,6 +14,7 @@ function [] = compare(t_r_1, t_r_2, outname)
     delta = [t_r_1(:,1) delta];
     save('-ascii', ['output/', outname], 'delta');
 
+	figure(figure_num)
     hold on
     plot(delta(:,1) / 86400, delta(:,2), '-')
     xlabel('t [day]')

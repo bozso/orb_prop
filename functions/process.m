@@ -77,7 +77,6 @@ function satrec = process(whichconst, longstr1, ...
     elnum = str2num(longstr1(65:68));
  
     % parse second line
-    
     cardnumb = str2num(longstr2(1));
     satrec.satnum = str2num(longstr2(3:7));
     satrec.inclo = str2num(longstr2(8:16));

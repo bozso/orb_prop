@@ -4,7 +4,7 @@ function rdot = zonal(t, r)
     rdot(2) = r(5);
     rdot(3) = r(6);
     
-    h = 5;
+    h = 1;
     
     rdot(4) = (pot_zonal(r_pos + [h, 0, 0]) - pot_zonal(r_pos - [h, 0, 0])) / (2 * h);
     rdot(5) = (pot_zonal(r_pos + [0, h, 0]) - pot_zonal(r_pos - [0, h, 0])) / (2 * h);
