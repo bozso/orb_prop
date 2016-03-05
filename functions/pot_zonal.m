@@ -8,6 +8,7 @@ function U = pot_zonal(r)
     a_per_r = a_earth * rec_delta;
     
     U = 1;
+    
     for n = 2:4
             Pn = legendre(n, cos_theta);
             U = U + a_per_r^n * C(n-1) * Pn(1) * sqrt((2*n+1) * 0.5);

@@ -4,11 +4,12 @@ addpath ('/home/istvan/orb_prop/sgp4');
 
 warning('off', 'Octave:possible-matlab-short-circuit-operator');
 
+global tumin mu mu_si radiusearthkm a_earth xke C whichconst
+
 %~ WGS84
 whichconst = 84;
 
 %~ Necessary constants
-global tumin mu mu_si radiusearthkm a_earth xke C whichconst
 C = [-0.484165143790815e-3, 0.95716107093473e-6, 0.53996586663899e-6];
 
 %~ Getting WGS84 constants
