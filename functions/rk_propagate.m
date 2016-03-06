@@ -1,5 +1,7 @@
+% Satellite trajectory calculation with ode78
+
 function [timexyzv] = rk_propagate(infile_path, outname)
-    %~ Processing parameters and initial conditions
+    % Processing parameters and initial conditions
     global whichconst
 	
 	[step day model satrec] = process_infile(infile_path, whichconst);

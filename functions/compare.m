@@ -1,3 +1,5 @@
+% Compares two satellite trajectories
+
 function [] = compare(t_r_1, t_r_2, outname, figure_num)
     if ( rows(t_r_1) != rows(t_r_2) )
         disp('compare: Rows of the two data matrices are not equal!')

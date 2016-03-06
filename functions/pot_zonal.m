@@ -1,3 +1,5 @@
+% Calculation of gravitational potential using zonal harmonics
+
 function U = pot_zonal(r)
     global mu_si a_earth C
 

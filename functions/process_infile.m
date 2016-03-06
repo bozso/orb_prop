@@ -1,3 +1,5 @@
+% Processes inputfile
+
 function [step day model satrec] = process_infile(file_loc, whichconst)
     % File that contains propagation parameters and initial conditions
     infile = fopen(file_loc, 'r');

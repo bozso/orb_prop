@@ -1,3 +1,5 @@
+% Satellite trajectory calculation with SGP
+
 function [] = sgp4_propagate(infile_path, outname)
     global whichconst
     
