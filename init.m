@@ -4,6 +4,7 @@
 addpath ('/home/istvan/orb_prop/functions');
 addpath ('/home/istvan/orb_prop/sgp4');
 
+% Turn off annoying warning message
 warning('off', 'Octave:possible-matlab-short-circuit-operator');
 
 global tumin mu mu_si radiusearthkm a_earth xke C whichconst

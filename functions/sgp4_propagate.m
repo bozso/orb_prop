@@ -52,5 +52,3 @@ function [] = sgp4_propagate(infile_path, outname)
     
     fclose(outfile);
 end	
-	
-	
