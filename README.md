@@ -15,7 +15,7 @@ Prameter file should look like this:
 step day model  
 orbital elements  
 
-For example:
+For example:  
 100 1 zonal  
 1 04793U 70106A   16038.50388155 +.00000000 +00000-0 +00000-0 0 00001  
 2 04793 000.0000 000.0000 0032224 000.0000 000.0000 12.53975678000007  

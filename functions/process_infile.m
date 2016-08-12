@@ -32,4 +32,3 @@ function [step day model satrec] = process_infile(file_loc, whichconst)
     
     fclose(infile);
 end
-
