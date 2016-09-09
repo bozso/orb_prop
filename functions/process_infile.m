@@ -1,6 +1,8 @@
 % Processes inputfile
 
-function [step day model satrec] = process_infile(file_loc, whichconst)
+function [step day model satrec] = process_infile(file_loc)
+    global whichconst jday_low jday_high
+    
     % File that contains propagation parameters and initial conditions
     infile = fopen(file_loc, 'r');
     
@@ -18,7 +20,7 @@ function [step day model satrec] = process_infile(file_loc, whichconst)
     model = str{3};
     
     % Processing oribtal element set
-    disp('Reading satellite data...')
+    printf('Reading satellite data...')
     longstr1 = fgets(infile, 130);
     while ( (longstr1(1) == '#') && (feof(infile) == 0) )
             longstr1 = fgets(infile, 130);
@@ -29,6 +31,13 @@ function [step day model satrec] = process_infile(file_loc, whichconst)
     end
             
     satrec = process(whichconst, longstr1, longstr2);
-    
     fclose(infile);
+    printf('DONE\n');
+
+    if (satrec.jdsatepoch > jday_high || satrec.jdsatepoch < jday_low)
+	{
+        printf("process_infile: Warning: Can only compare sgp and "); 
+        printf("Runge-Kutta if ephemeris date is between 1992.01.01 ");
+        printf("2016.07.01\n");
+	}	
 end
