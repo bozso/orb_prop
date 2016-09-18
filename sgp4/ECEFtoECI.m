@@ -47,7 +47,7 @@
 % Programed by Darin Koblick  07-17-2010                                  %
 % Modified on 03/01/2012 to add acceleration vector support               %
 %------------------------------------------------------------------       %
-function [r_ECI v_ECI a_ECI] = ECEFtoECI(JD,r_ECEF,v_ECEF,a_ECEF)
+function [r_ECI v_ECI] = ECEFtoECI(JD,r_ECEF,v_ECEF)
 %Enforce JD to be [N x 1]
 JD = JD(:);
 
@@ -63,9 +63,6 @@ omega_e = 7.29211585275553e-005;
 r_ECI = squeeze(MultiDimMatrixMultiply(MultiDimMatrixTranspose(T3D(THETA)),r_ECEF));
 v_ECI = squeeze(MultiDimMatrixMultiply(MultiDimMatrixTranspose(T3D(THETA)),v_ECEF) + ...
     MultiDimMatrixMultiply(MultiDimMatrixTranspose(Tdot3D(THETA,omega_e)),r_ECEF));
-a_ECI = squeeze(MultiDimMatrixMultiply(MultiDimMatrixTranspose(T3D(THETA)),a_ECEF) + ...
-    2.*MultiDimMatrixMultiply(MultiDimMatrixTranspose(Tdot3D(THETA,omega_e)),v_ECEF) + ...
-    MultiDimMatrixMultiply(MultiDimMatrixTranspose(Tddot3D(THETA,omega_e)),r_ECEF));
 %----------------------------- End Code-----------------------------------%
 
 function C = MultiDimMatrixMultiply(A,B)

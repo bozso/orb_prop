@@ -2,7 +2,7 @@
 
 function [t_poz_vel] = rk_propagate(step, day, model, satrec)
     % Processing parameters and initial conditions
-    global whichconst day2sec
+    global whichconst day2sec sec2day
 	
     switch (model)
         case 'point_mass'
@@ -10,7 +10,7 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
             f_handle = @point_mass;
         case 'zonal'
             f_handle = @zonal;
-            printf("sgp4_propagate: Zonal harmonics will be used, air ");
+            printf("rk_propagate: Zonal harmonics will be used, air ");
             printf("friction will be inored.\n");
             satrec.bstar = 0.0;
         otherwise
@@ -21,17 +21,17 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
     vopt = odeset('RelTol', 1e-4, 'AbsTol', 1, 'NormControl', 'on', ...
 					'InitialStep', 100, 'MaxStep', 100);
 
-    % Getting initial conditions
+    % Getting initial conditions in TEME
+    [satrec, r_teme ,v_teme] = sgp4(satrec,  0.0);
     
-    % Transformation!!!!!
+    % Transforming into ECI
+    poz_vel_eci = teme2eci([satrec.jdsatepoch, r_teme, v_teme]);
     
-    [satrec, ro ,vo] = sgp4(satrec,  0.0);
-
     % Changing into SI units
-    rv_0 = [ro, vo] * 1e3;
+    poz_vel_eci = poz_vel_eci(:,2:end) * 1e3;
 
     % Propagation with ode78
-    [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], rv_0, vopt);
+    [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], poz_vel_eci', vopt);
 
-    t_poz_vel = [(satrec.jdsatepoch + t .* sec2day)', r_ode];
+    t_poz_vel = [(satrec.jdsatepoch + t .* sec2day), r_ode];
 end

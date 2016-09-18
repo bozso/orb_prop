@@ -37,10 +37,11 @@ function [t_poz_vel] = sgp4_propagate(step, day, model, satrec)
                 
         if (satrec.error == 0)
             t_poz_vel(iii,:) = [satrec.jdsatepoch + time(iii) * sec2day,...
-                                ro * 1e3, vo * 1e3];
+                                ro, vo];
         else
             printf("sgp4_propagate: Error: satrec.error is non zero! ");
             printf("Exiting now!\n");
+            return 
         end %// if satrec.error == 0
     end %// while propagating the orbit   
 end	
