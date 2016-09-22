@@ -19,6 +19,10 @@ C = [-0.484165143790815e-3, 0.95716107093473e-6, 0.53996586663899e-6];
 % Getting WGS84 constants
 [tumin, mu, radiusearthkm, xke, j2, j3, j4, j3oj2] = getgravc(whichconst);
 
+j2 = 0.0;
+j3 = 0.0;
+j4 = 0.0;
+
 % Changing into SI units
 a_earth = radiusearthkm * 1000;
 mu_si = mu * 1e9;

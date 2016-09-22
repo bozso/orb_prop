@@ -1,4 +1,5 @@
-% Calculates the orbital elements given the inital conditions: t_0, location vector, velocity vector
+% Calculates the orbital elements given the inital conditions: t_0, 
+% location vector, velocity vector
 
 function [a, e, i, omega, sinw, cosw,  n, tau] = orbital_elements(t_0, rv_0)
     global mu_si
@@ -7,10 +8,11 @@ function [a, e, i, omega, sinw, cosw,  n, tau] = orbital_elements(t_0, rv_0)
     
     c = cross(r_0, v_0);
     r = norm(r_0);
+    per_r = 1 / r;
     
-    lambda = - (mu_si / r) * r_0 + cross (v_0, c);
+    lambda = - (mu_si * per_r) * r_0 + cross (r_0, c);
     
-    i = - atan2(sqrt(c(1) * c(1) + c(2) * c(2)), c(3));
+    i = atan2(sqrt(c(1) * c(1) + c(2) * c(2)), c(3));
     
     if (-c(1) == 0 && c(2) == 0)
             omega = 0.0;
@@ -18,21 +20,24 @@ function [a, e, i, omega, sinw, cosw,  n, tau] = orbital_elements(t_0, rv_0)
             omega = atan2(-c(1), c(2));
     end
     
-    sinw = ( -lambda(1) * sin(omega) + lambda(2) * cos(omega) ) / ( norm(lambda) * cos(i) );	
-    cosw = ( lambda(2) * sin(omega) + lambda(1) * cos(omega) ) / ( norm(lambda) );
-
-    h = (v_0 * v_0') / 2 - (mu_si / r);
+    norm_lambda = norm(lambda);
     
-    a = -mu_si / (2*h);
-    n = sqrt(mu_si / (a*a*a));
-    e = sqrt( 1 + 2 * h * (c*c' / (mu_si * mu_si)) );
-    E_0 = acos( (1 - (r / a)) / e );
+    sinw = ( -lambda(1) * sin(omega) + lambda(2) * cos(omega) ) ...
+            / ( norm_lambda * cos(i) );
+    cosw = ( lambda(1) * cos(omega) + lambda(2) * sin(omega) ) ...
+            / norm_lambda;
+    h = (v_0 * v_0') / 2 - (mu_si * per_r);
     
-    E_O_im = imag(E_0);
+    a = - mu_si / (2*h);
+    per_a = 1 / a;
+    n = sqrt( mu_si * (per_a^3) );
+    e = sqrt( 1 + 2 * h * ( dot(c, c) / (mu_si * mu_si) ) );
+    E_0 = acos( ( 1 - r * per_a) / e );
+    E_0_im = imag(E_0);
     
-    if ( E_O_im > 1e-3)
-            printf ('Warning: E_0 has a significant imaginary part: %f\n', E_0_im);
-            printf ('Calculations, may be inaccurate.\n');
+    if ( E_0_im > 1e-3)
+            printf ("Warning: E_0 has a significant imaginary part: %f\n", E_0_im);
+            printf ("Calculations, may be inaccurate.\n");
     else
             E_0 = real (E_0);
     end

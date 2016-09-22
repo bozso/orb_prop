@@ -44,7 +44,6 @@ function [recef,vecef] = teme2ecef  ( rteme,vteme,ttt,jdut1,lod,xp,yp )
 
         % ------------------------ find gmst --------------------------
         gmst= gstime( jdut1 );
-        lod
 
         thetasa    = 7.29211514670698e-05 * (1.0  - lod/86400.0 );
         omegaearth = thetasa;

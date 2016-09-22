@@ -11,7 +11,7 @@ function [t_poz_vel] = sgp4_propagate(step, day, model, satrec)
         case 'point_mass'
             printf("sgp4_propagate: SGP4 can not handle the Earth as ");
             printf("a point mass.\n");
-            return
+%            return
         case 'zonal'
             printf("sgp4_propagate: Zonal harmonics will be used, air ");
             printf("friction will be inored.\n");
@@ -38,6 +38,8 @@ function [t_poz_vel] = sgp4_propagate(step, day, model, satrec)
         if (satrec.error == 0)
             t_poz_vel(iii,:) = [satrec.jdsatepoch + time(iii) * sec2day,...
                                 ro, vo];
+%            [satrec.jdsatepoch + time(iii) * sec2day, ro, vo]
+%            t_poz_vel(iii,:)
         else
             printf("sgp4_propagate: Error: satrec.error is non zero! ");
             printf("Exiting now!\n");
