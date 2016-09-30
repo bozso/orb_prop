@@ -3,10 +3,12 @@
 ## Goals
 
 Comparing two numerical methods of satellite trajectory calculation:
-SGP4 and numerical integration of the equations of motion ofa "low Earth orbit" satellite using the ode78 function.
+SGP4 and numerical integration of the equations of motion of a "low Earth orbit"
+satellite using the ode78 function.
 For that we use the implementation of the SGP4 model that can be downloaded here:
 (http://celestrak.com/software/tskelso-sw.asp).
-The numerical integrator is under development and can be accessed from this repository. The codes use the SGP librabry
+The numerical integrator is under development and can be accessed from this repository.
+The codes use the SGP librabry
 for setting the initial parameters of integration.
 
 ## Input of the integrator

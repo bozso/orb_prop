@@ -2,13 +2,13 @@
 % reference plane.
 
 
-function Rot = calc_rotmatrix (sinw, cosw, i, omega)
-    P_x = cosw * cos(omega) - sinw * sin(omega) * cos(i);
-    P_y = cosw * sin(omega) + sinw * cos(omega) * cos(i);
-    P_z = sinw * sin(i);
-    Q_x = -sinw * cos(omega) - cosw * sin(omega) * cos(i);
-    Q_y = -sinw * sin(omega) + cosw * cos(omega) * cos(i);
-    Q_z = cosw * sin(i);
+function Rot = calc_rotmatrix (sinw, cosw, incl, omega)
+    P_x = cosw * cos(omega) - sinw * sin(omega) * cos(incl);
+    P_y = cosw * sin(omega) + sinw * cos(omega) * cos(incl);
+    P_z = sinw * sin(incl);
+    Q_x = -sinw * cos(omega) - cosw * sin(omega) * cos(incl);
+    Q_y = -sinw * sin(omega) + cosw * cos(omega) * cos(incl);
+    Q_z = cosw * sin(incl);
 
     Rot =  [P_x, Q_x; ...
             P_y, Q_y; ...
