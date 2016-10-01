@@ -66,6 +66,7 @@ function [startmfe, stopmfe, deltamin, satrec] = twoline2rv(longstr1, longstr2, 
 
 %     // set the implied decimal points since doing a formated read
 %     // fixes for bad input data values (missing, ...)
+    
     for (j = 11:16)
         if (longstr1(j) == ' ')
             longstr1(j) = '_';

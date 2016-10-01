@@ -2,7 +2,7 @@
 
 function [t_poz_vel] = rk_propagate(step, day, model, satrec)
     % Processing parameters and initial conditions
-    global whichconst day2sec sec2day
+    global whichconst day2sec sec2day eod
 	
     switch (model)
         case 'point_mass'
@@ -22,13 +22,24 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
 					'InitialStep', 100, 'MaxStep', 100);
 
     % Getting initial conditions in TEME
-    [satrec, r_teme ,v_teme] = sgp4(satrec,  0.0);
+    [satrec, rteme ,vteme] = sgp4(satrec,  0.0);
     
     % Transforming into ECI
-    poz_vel_eci = teme2eci([satrec.jdsatepoch, r_teme, v_teme]);
+    
+    [jd, jd_frac] = whole_and_frac(satrec.jdsatepoch);
+
+    [year,mon,day,hr,min,sec] = invjday ( jd, jd_frac );
+
+    dat = iauDat(year, mon, day, jd_frac);
+    dut1 = interp1(eod(:,1), eod(:,4), satrec.jdsatepoch - 2400000.5);
+    
+    [ut1, tut1, jdut1,jdut1frac, utc, tai, tt, ttt, jdtt,jdttfrac, tdb, ttdb, jdtdb,jdtdbfrac, tcg, jdtcg,jdtcgfrac, tcb, jdtcb,jdtcbfrac ] ...
+         = convtime (year, mon, day, hr, min, sec, 0, dut1, dat );
+    
+    [reci, veci, aeci] = teme2eci(rteme, vteme, [0 0 0], ttt, 106, 2, 'a');
     
     % Changing into SI units
-    poz_vel_eci = poz_vel_eci(:,2:end) * 1e3;
+    poz_vel_eci = [reci * 1e3, veci * 1e3];
 
     % Propagation with ode78
     [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], poz_vel_eci', vopt);

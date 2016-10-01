@@ -31,8 +31,10 @@ function [step day model satrec] = process_infile(file_loc)
     end
             
 #    satrec = process(whichconst, longstr1, longstr2);
-    [satrec, startmfe, stopmfe, deltamin] = twoline2rv(whichconst, longstr1, ...
-          longstr2, 'c','e');
+#    [satrec, startmfe, stopmfe, deltamin] = twoline2rv(whichconst, longstr1, ...
+#          longstr2, 'c','e');
+    [startmfe, stopmfe, deltamin, satrec] = twoline2rv(longstr1, longstr2, ...
+          'c', 'm', 'i', whichconst);
     fclose(infile);
     printf('DONE\n');
 
