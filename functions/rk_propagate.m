@@ -8,9 +8,14 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
         case 'point_mass'
             disp('rk_propagate: Calculating with Earth as a point mass.');
             f_handle = @point_mass;
-        case 'zonal'
-            f_handle = @zonal;
-            printf("rk_propagate: Zonal harmonics will be used, air ");
+        case 'zonal_2'
+            f_handle = @zonal_2;
+            printf("rk_propagate: J2 will be used, air ");
+            printf("friction will be inored.\n");
+            satrec.bstar = 0.0;
+        case 'zonal_234'
+            f_handle = @zonal_234;
+            printf("rk_propagate: Zonal harmonics (J234) will be used, air ");
             printf("friction will be inored.\n");
             satrec.bstar = 0.0;
         otherwise
@@ -22,6 +27,7 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
 					'InitialStep', 100, 'MaxStep', 100);
 
     % Getting initial conditions in TEME
+    printf("Getting initial conditions from satrec...");
     [satrec, rteme ,vteme] = sgp4(satrec,  0.0);
     
     % Transforming into ECI
@@ -40,9 +46,13 @@ function [t_poz_vel] = rk_propagate(step, day, model, satrec)
     
     % Changing into SI units
     poz_vel_eci = [reci' * 1e3, veci' * 1e3];
-
+    
+    printf("DONE\n");
+    
     % Propagation with ode78
+    printf("Propagating with ode87...");
     [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], poz_vel_eci', vopt);
-
+    printf("DONE\n");
+    
     t_poz_vel = [(satrec.jdsatepoch + t .* sec2day), r_ode];
 end

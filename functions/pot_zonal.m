@@ -1,6 +1,6 @@
 % Calculation of gravitational potential using zonal harmonics
 
-function U = pot_zonal(r)
+function U = pot_zonal(r, n)
     global mu_si a_earth C
 
     delta = norm(r);
@@ -11,9 +11,9 @@ function U = pot_zonal(r)
     
     U = 1;
     
-    for n = 2:4
-            Pn = legendre(n, cos_theta);
-            U = U + a_per_r^n * C(n-1) * Pn(1) * sqrt((2*n+1) * 0.5);
+    for iii = 2:n
+            Pn = legendre(iii, cos_theta);
+            U = U + a_per_r^n * C(iii-1) * Pn(1) * sqrt((2*iii+1) * 0.5);
     end
     
     U = U * (mu_si * rec_delta);
