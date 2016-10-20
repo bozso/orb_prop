@@ -7,6 +7,7 @@ addpath ('vallado');
 
 % Turn off annoying warning message
 warning('off', 'Octave:possible-matlab-short-circuit-operator');
+warning('off', 'warning: load:file-found-in-load-path');
 
 global tumin mu mu_si radiusearthkm a_earth xke C whichconst day2sec ...
 sec2day eod
