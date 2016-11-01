@@ -3,6 +3,7 @@
 % Acces to function scripts
 addpath ('functions');
 addpath ('vallado');
+addpath('/usr/share/octave/packages/odepkg-0.8.5');
 
 
 % Turn off annoying warning message
