@@ -1,5 +1,10 @@
 % Initalizes necessary paths and contants
 
+global tumin mu mu_si radiusearthkm a_earth xke C whichconst day2sec ...
+sec2day eod deltaT_jday omega
+
+omega = [0 0 1.15740740740741e-05];
+
 % Acces to function scripts
 addpath ('functions');
 addpath ('vallado');
@@ -7,11 +12,10 @@ addpath('/usr/share/octave/packages/odepkg-0.8.5');
 
 
 % Turn off annoying warning message
-warning('off', 'Octave:possible-matlab-short-circuit-operator');
-warning('off', 'warning: load:file-found-in-load-path');
+warning('off', 'all');
 
-global tumin mu mu_si radiusearthkm a_earth xke C whichconst day2sec ...
-sec2day eod
+eod = load('eod_IAU2000_MJD.dat');
+load deltaT_jday;
 
 % WGS84
 whichconst = 84;
@@ -28,7 +32,3 @@ mu_si = mu * 1e9;
 
 day2sec = 86400;
 sec2day = 1 / day2sec;
-
-% loading eod
-#load('/home/istvan/orb_prop/eod_jday.mat');
-eod = load('eod_IAU2000_MJD.dat');

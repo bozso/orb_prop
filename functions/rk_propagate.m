@@ -2,9 +2,9 @@
 
 function t_poz_vel = rk_propagate(step, day, model, jd0, rv0)
     % Processing parameters and initial conditions
-    global whichconst day2sec sec2day eod zonal_end jd0
+    global sec2day day2sec omega
 
-    switch (model)
+   switch (model)
         case 'point_mass'
             disp('rk_propagate: Calculating with Earth as a point mass.');
             f_handle = @point_mass;
@@ -21,10 +21,7 @@ function t_poz_vel = rk_propagate(step, day, model, jd0, rv0)
                     'InitialStep', step, 'MaxStep', step);
 
     % Propagation with ode78
-    printf("Propagating with ode87...");
-    [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], rv0, vopt, ...
-                        jd0);
-    printf("DONE\n");
+    [t, r_ode] = ode78(f_handle, [0.0, day2sec * day], rv0, vopt);
 
-    t_poz_vel = [(jd0 + t .* sec2day), r_ode];
+    t_poz_vel = [(jd0 + t * sec2day), r_ode];
 end

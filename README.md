@@ -8,12 +8,12 @@ satellite using the ode78 function.
 For that we use the implementation of the SGP4 model that can be downloaded here:
 (http://celestrak.com/software/tskelso-sw.asp).
 The numerical integrator is under development and can be accessed from this repository.
-The codes use the SGP librabry
+The codes use the SGP library
 for setting the initial parameters of integration.
 
 ## Input of the integrator
 
-Prameter file should look like this:  
+Parameter file should look like this:  
 step day model  
 orbital elements  
 

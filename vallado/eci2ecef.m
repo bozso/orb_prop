@@ -66,7 +66,7 @@ function [recef,vecef,aecef] = eci2ecef  ( reci,veci,aeci,ttt,jdut1,lod,xp,yp,eq
 
         thetasa= 7.29211514670698e-05 * (1.0  - lod/86400.0 );
         omegaearth = [0; 0; thetasa;];
-        
+
         rpef  = st'*nut'*prec'*reci;
         recef = pm'*rpef;
 
