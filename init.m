@@ -8,14 +8,10 @@ omega = [0 0 1.15740740740741e-05];
 % Acces to function scripts
 addpath ('functions');
 addpath ('vallado');
-addpath('/usr/share/octave/packages/odepkg-0.8.5');
-
-
-% Turn off annoying warning message
-warning('off', 'all');
+% addpath ('/usr/share/octave/packages/odepkg-0.8.5');
 
 eod = load('eod_IAU2000_MJD.dat');
-load deltaT_jday;
+% load deltaT_jday;
 
 % WGS84
 whichconst = 84;
